@@ -10,20 +10,26 @@ import (
 	"github.com/gorilla/mux"
 )
 
+var BSNnummers []BSN
+
 type BSN struct {
 	Nummer string `json:"Nummer"`
 	Naam   string `json:"Naam"`
 }
 
-var BSNnummers []BSN
+func main() {
+	BSNnummers = []BSN{
+		{Nummer: "123456789", Naam: "Noa"},
+		{Nummer: "987654321", Naam: "Hog Rider"},
+	}
+	HandleRequests()
+}
 
 func HandleRequests() {
 	myRouter := mux.NewRouter().StrictSlash(true)
-
 	myRouter.HandleFunc("/", homePage)
 	myRouter.HandleFunc("/bsnnummers", returnAllBSN)
 	myRouter.HandleFunc("/bsntoevoegen", BSNToevoegen).Methods("POST")
-
 	log.Fatal(http.ListenAndServe(":10000", myRouter))
 }
 
@@ -43,23 +49,4 @@ func returnAllBSN(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Einde behaald deel 2: returnAllBSN")
 	json.NewEncoder(w).Encode(BSNnummers)
 
-}
-func main() {
-	BSNnummers = []BSN{
-		{Nummer: "123456789", Naam: "Noa"},
-		{Nummer: "987654321", Naam: "Hog Rider"},
-	}
-
-	// Eventueel vanuit bestand lezen
-	// data, err := ioutil.ReadFile("data.json")
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// var slice []string
-	// err = json.Unmarshal(data, &slice)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	HandleRequests()
 }
