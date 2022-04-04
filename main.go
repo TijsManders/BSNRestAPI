@@ -33,6 +33,11 @@ func HandleRequests() {
 	log.Fatal(http.ListenAndServe(":10000", myRouter))
 }
 
+func homePage(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Welcome to the BSN World!")
+	fmt.Println("Einde behaald")
+}
+
 func BSNToevoegen(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	var bsn BSN
@@ -41,10 +46,6 @@ func BSNToevoegen(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(bsn)
 }
 
-func homePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome to the BSN World!")
-	fmt.Println("Einde behaald")
-}
 func returnAllBSN(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Einde behaald deel 2: returnAllBSN")
 	json.NewEncoder(w).Encode(BSNnummers)
